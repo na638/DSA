@@ -9,7 +9,7 @@ typedef struct{
 
 List initialize (List L);
 List insertPos (List L, int pos, int data);
-List deletePos(List L, int position);
+List deletePos(List L, int pos);
 int locate (List L, int data);
 List insertSorted (List L, int data);
 void display(List L);
@@ -36,36 +36,36 @@ int main(){
 }
 
 List initialize (List L){
-
-    L.count = 0;
-    int i;
-
-    for(i = 0; i < MAX; i++){
-        L.elem[i] = -1;
-    }
-    
-    return L;
+   L.count = 0;
+   int i;
+   
+   for(i = 0; i < MAX; i++){
+       L.elem[i] = -1;
+   }
+   
+   return L;
 }
 
 List insertPos (List L, int pos, int data){
     int i;
+    
     for(i = L.count; i > pos; i--){
         L.elem[i] = L.elem[i - 1];
     }
-
-    L.elem[pos] = data;
+    
+    L.elem[i] = data;
     L.count++;
     return L;
 }
 
-List deletePos(List L, int position){
-    int i;
-    for(i = position; i < L.count; i++){
-        L.elem[i] = -1;  
-    }
-
-     L.count--;
-     return L;
+List deletePos(List L, int pos){
+  int i;
+  
+  for(i = pos; i < L.count; i++){
+      L.elem[i] = -1;
+  }
+  
+  return L;
 }
 
 int locate (List L, int data){
