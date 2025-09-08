@@ -83,7 +83,7 @@ int peek(Stack* NewStack) {
 void display(Stack* NewStack) {
     
     int i;
-    if (NewStack->top == 1){
+    if (NewStack->top == -1){
         return;
     }
     
@@ -94,3 +94,4 @@ void display(Stack* NewStack) {
     }
     printf("\n");
 }
+
