@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define LENGTH 5
+#define LENGTH 10
 
 typedef struct {
     int *elem;
@@ -31,10 +31,9 @@ int main() {
 
     printf("Locate 30: %d\n", locate(L, 30));
 
-    L = insertSorted(L, 25);
-    L = insertSorted(L, 5);
     L = insertSorted(L, 40);
-    L = insertSorted(L, 35);
+    L = insertSorted(L, 50);
+
     display(L);
 
     free(L.elem);
@@ -113,3 +112,4 @@ List resize(List L) {
     L.max = newMax;
     return L;
 }
+
