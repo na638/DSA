@@ -6,109 +6,102 @@
 typedef struct {
     int elem[MAX];
     int count;
-} List;
+} List, *EPtr;
 
-void initialize(List *L);
-void insertPos(List *L, int data, int pos);
-void deletePos(List *L, int pos);
-int locate(List *L, int data);
-int retrieve(List *L, int pos);
-void insertSorted(List *L, int data);
-void display(List *L);
-void makeNULL(List *L);
+void initialize(EPtr L);
+void insertPos(EPtr L, int data, int position);
+void deletePos(EPtr L, int position);
+int locate(EPtr L, int data);
+int retrieve(EPtr L, int position);
+void insertSorted(EPtr L, int data);
+void display(EPtr L);
+void makeNULL(EPtr L);
 
 int main() {
-    List *L = (List*) malloc(sizeof(List));
-    
+    EPtr L = (EPtr)malloc(sizeof(List));
     initialize(L);
-    
+
     insertPos(L, 10, 0);
     insertPos(L, 20, 1);
     insertPos(L, 30, 2);
-    
     display(L);
-    
+
     deletePos(L, 1);
     display(L);
-    
+
     printf("Locate 30: %d\n", locate(L, 30));
-    printf("Retrieve pos 3: %d\n", retrieve(L, 3));
-    
-    insertSorted(L, 40);
+    printf("Retrieve at 1: %d\n", retrieve(L, 1));
+
+    insertSorted(L, 25);
+    insertSorted(L, 5);
     display(L);
-     
+
     makeNULL(L);
     return 0;
 }
 
-void initialize(List *L) {
-    int i;
+void initialize(EPtr L) {
     L->count = 0;
-    for(i = 0; i < MAX; i++) {
-        L->elem[i] = -1;   
+    for (int i = 0; i < MAX; i++) {
+        L->elem[i] = -1;
     }
 }
 
-void insertPos(List *L, int data, int pos) {
-    int i;
-    if(pos < 0 || pos > L->count || L->count == MAX) {
-        return;  
+void insertPos(EPtr L, int data, int position) {
+    if (position <= L->count && L->count < MAX) {
+        for (int i = L->count; i > position; i--) {
+            L->elem[i] = L->elem[i - 1];
+        }
+        L->elem[position] = data;
+        L->count++;
     }
-    for(i = L->count; i > pos; i--) {
-        L->elem[i] = L->elem[i - 1]; 
-    }
-    L->elem[pos] = data;
-    L->count++;
 }
 
-void deletePos(List *L, int pos) {
-   int i;
-   if(pos < 0 || pos >= L->count) {
-       return;
-   }
-   for(i = pos; i < L->count - 1; i++) {
-       L->elem[i] = L->elem[i + 1];
-   }
-   L->elem[L->count - 1] = -1;
-   L->count--;
+void deletePos(EPtr L, int position) {
+    if (position < L->count) {
+        for (int i = position; i < L->count - 1; i++) {
+            L->elem[i] = L->elem[i + 1];
+        }
+        L->elem[L->count - 1] = -1;
+        L->count--;
+    }
 }
 
-int locate(List *L, int data) {
-    int i;
-    for(i = 0; i < L->count; i++) {
-        if(L->elem[i] == data) {
+int locate(EPtr L, int data) {
+    for (int i = 0; i < L->count; i++) {
+        if (L->elem[i] == data) {
             return i;
         }
     }
     return -1;
 }
 
-int retrieve(List *L, int pos) {
-    if(pos < 0 || pos >= L->count) {
-        return -1;
+int retrieve(EPtr L, int position) {
+    if (position < L->count) {
+        return L->elem[position];
     }
-    return L->elem[pos];
+    return -1;
 }
 
-void insertSorted(List *L, int data) {
-    if(L->count >= MAX) {
-        return;
+void insertSorted(EPtr L, int data) {
+    if (L->count < MAX) {
+        int i = L->count - 1;
+        while (i >= 0 && L->elem[i] > data) {
+            L->elem[i + 1] = L->elem[i];
+            i--;
+        }
+        L->elem[i + 1] = data;
+        L->count++;
     }
-    int pos = 0; 
-    while(pos < L->count && L->elem[pos] < data) {
-        pos++;
-    }
-    insertPos(L, data, pos);
 }
 
-void display(List *L) {
-    int i;
-    for(i = 0; i < MAX; i++) {
+void display(EPtr L) {
+    for (int i = 0; i < MAX; i++) {
         printf("%d ", L->elem[i]);
     }
     printf("\n");
 }
 
-void makeNULL(List *L) {
+void makeNULL(EPtr L) {
     free(L);
 }
