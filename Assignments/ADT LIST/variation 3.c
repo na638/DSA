@@ -1,118 +1,115 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define MAX 10
+#define LENGTH 5
 
 typedef struct {
-    int elem[MAX];
+    int *elem;
     int count;
+    int max;
 } List;
 
-void initialize(List *L);
-void insertPos(List *L, int data, int pos);
-void deletePos(List *L, int pos);
-int locate(List *L, int data);
-int retrieve(List *L, int pos);
-void insertSorted(List *L, int data);
-void display(List *L);
-void makeNULL(List *L);
+List initialize(List L);
+List insertPos(List L, int data, int position);
+List deletePos(List L, int position);
+int locate(List L, int data);
+List insertSorted(List L, int data);
+void display(List L);
+List resize(List L);
 
 int main() {
     List L;
-    initialize(&L);
+    L = initialize(L);
 
-    insertPos(&L, 10, 0);
-    insertPos(&L, 20, 1);
-    insertPos(&L, 30, 2);
-    display(&L);
+    L = insertPos(L, 10, 0);
+    L = insertPos(L, 20, 1);
+    L = insertPos(L, 30, 2);
+    display(L);
 
-    deletePos(&L, 1);
-    display(&L);
+    L = deletePos(L, 1);
+    display(L);
 
-    printf("Locate 30: %d\n", locate(&L, 30));
-    printf("Retrieve pos 3: %d\n", retrieve(&L, 3));
+    printf("Locate 30: %d\n", locate(L, 30));
 
-    insertSorted(&L, 40);
-    display(&L);
+    L = insertSorted(L, 25);
+    L = insertSorted(L, 5);
+    L = insertSorted(L, 40);
+    L = insertSorted(L, 35);
+    display(L);
 
+    free(L.elem);
     return 0;
 }
 
-void initialize(List *L) {
-    int i;
-    L->count = 0;
-    for (i = 0; i < MAX; i++) {
-        L->elem[i] = -1;
-    }
+List initialize(List L) {
+    L.elem = (int*)malloc(LENGTH * sizeof(int));
+    L.count = 0;
+    L.max = LENGTH;
+    return L;
 }
 
-void insertPos(List *L, int data, int pos) {
-    int i;
-    if (pos < 0 || pos > L->count || L->count == MAX) {
-        return;
+List insertPos(List L, int data, int position) {
+    if (position <= L.count && position >= 0) {
+        if (L.count == L.max) {
+            L = resize(L);
+        }
+        for (int i = L.count; i > position; i--) {
+            L.elem[i] = L.elem[i - 1];
+        }
+        L.elem[position] = data;
+        L.count++;
     }
-
-    for (i = L->count; i > pos; i--) {
-        L->elem[i] = L->elem[i - 1];
-    }
-
-    L->elem[pos] = data;
-    L->count++;
+    return L;
 }
 
-void deletePos(List *L, int pos) {
-    int i;
-    
-    if (pos < 0 || pos >= L->count) {
-        return;
+List deletePos(List L, int position) {
+    if (position < L.count && position >= 0) {
+        for (int i = position; i < L.count - 1; i++) {
+            L.elem[i] = L.elem[i + 1];
+        }
+        L.count--;
     }
-
-    for (i = pos; i < L->count - 1; i++) {
-        L->elem[i] = L->elem[i + 1];
-    }
-
-    L->elem[L->count - 1] = -1;
-    L->count--;
+    return L;
 }
 
-int locate(List *L, int data) {
-    int i;
-    
-    for (i = 0; i < L->count; i++) {
-        if (L->elem[i] == data) {
+int locate(List L, int data) {
+    for (int i = 0; i < L.count; i++) {
+        if (L.elem[i] == data) {
             return i;
         }
     }
     return -1;
 }
 
-int retrieve(List *L, int pos) {
-    if (pos < 0 || pos >= L->count) {
-        return -1;
+List insertSorted(List L, int data) {
+    if (L.count == L.max) {
+        L = resize(L);
     }
-    return L->elem[pos];
+    int i = L.count - 1;
+    while (i >= 0 && L.elem[i] > data) {
+        L.elem[i + 1] = L.elem[i];
+        i--;
+    }
+    L.elem[i + 1] = data;
+    L.count++;
+    return L;
 }
 
-void insertSorted(List *L, int data) {
-    if (L->count == MAX) return;
-
-    int pos = 0;
-    while (pos < L->count && L->elem[pos] < data) {
-        pos++;
-    }
-    insertPos(L, data, pos);
-}
-
-void display(List *L) {
-    for (int i = 0; i < MAX; i++) {
-        printf("%d ", L->elem[i]);
+void display(List L) {
+    for (int i = 0; i < L.count; i++) {
+        printf("%d ", L.elem[i]);
     }
     printf("\n");
 }
 
-void makeNULL(List *L) {
-    L->count = 0;
-    for (int i = 0; i < MAX; i++) {
-        L->elem[i] = -1;
+List resize(List L) {
+    int newMax = L.max * 2;
+    int *newElem = (int*)malloc(newMax * sizeof(int));
+    for (int i = 0; i < L.count; i++) {
+        newElem[i] = L.elem[i];
     }
+    free(L.elem);
+    L.elem = newElem;
+    L.max = newMax;
+    return L;
 }
