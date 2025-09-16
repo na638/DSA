@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define LENGTH 5
+#define LENGTH 10
 
 typedef struct {
     int *data;
