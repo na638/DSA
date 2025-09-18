@@ -38,16 +38,14 @@ int main() {
 }
 
 Stack* initialize() {
-    
-    Stack *NewStack = (Stack*)malloc(sizeof(Stack));
-    
-    if(NewStack == NULL){
-        exit(1);
-    }
-    
-    
-    NewStack->top = -1;
-    return NewStack;
+   Stack *NewStack = (Stack*)malloc(sizeof(Stack));
+   
+   if(NewStack == NULL){
+       exit(1);
+   }
+   
+   NewStack->top = -1;
+   return NewStack;
 }
 
 void push(Stack *NewStack, int value) {
@@ -94,4 +92,3 @@ void display(Stack* NewStack) {
     }
     printf("\n");
 }
-
