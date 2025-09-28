@@ -1,0 +1,89 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+
+#define MAX 5
+
+typedef struct {
+    int items[MAX];
+    int front;
+    int rear;
+    int count;
+} Queue;
+
+Queue* initialize() {
+    Queue* q = (Queue*)malloc(sizeof(Queue));
+    q->front = -1;
+    q->rear = -1;
+    q->count = 0;
+    return q;
+}
+
+bool isFull(Queue* q) {
+    return q->count == MAX;
+}
+
+bool isEmpty(Queue* q) {
+    return q->count == 0;
+}
+
+void enqueue(Queue* q, int value) {
+    if (isFull(q)) return;
+    if (isEmpty(q)) {
+        q->front = 0;
+        q->rear = 0;
+    } else {
+        q->rear = (q->rear + 1) % MAX;
+    }
+    q->items[q->rear] = value;
+    q->count++;
+}
+
+int dequeue(Queue* q) {
+    if (isEmpty(q)) return -1;
+    int value = q->items[q->front];
+    if (q->count == 1) {
+        q->front = -1;
+        q->rear = -1;
+    } else {
+        q->front = (q->front + 1) % MAX;
+    }
+    q->count--;
+    return value;
+}
+
+int front(Queue* q) {
+    if (isEmpty(q)) return -1;
+    return q->items[q->front];
+}
+
+void display(Queue* q) {
+    if (isEmpty(q)) {
+        printf("Queue is empty.\n");
+        return;
+    }
+    int index = q->front;
+    for (int i = 0; i < q->count; i++) {
+        printf("%d ", q->items[index]);
+        index = (index + 1) % MAX;
+    }
+    printf("\n");
+}
+
+int main() {
+    Queue* q = initialize();
+    enqueue(q, 10);
+    enqueue(q, 20);
+    enqueue(q, 30);
+    enqueue(q, 40);
+    display(q);
+    printf("Front element: %d\n", front(q));
+    printf("Dequeued: %d\n", dequeue(q));
+    display(q);
+    enqueue(q, 50);
+    enqueue(q, 60);
+    display(q);
+    printf("Dequeued: %d\n", dequeue(q));
+    display(q);
+    return 0;
+}
