@@ -101,13 +101,13 @@ int main(){
     insertPos(L, 2, 1);
     insertPos(L, 5, 3);
 
-    display(L);   // 1 2 3 5
+    display(L);  
 
     deletePos(L, 1);
-    display(L);   // 1 3 5
+    display(L);  
 
     insertSorted(L, 4);
-    display(L);   // 1 3 4 5
+    display(L);  
 
     printf("Position of 5: %d\n", Locate(L, 5));
     printf("Element at index 2: %d\n", retrieve(L, 2));
