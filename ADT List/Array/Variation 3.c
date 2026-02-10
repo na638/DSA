@@ -88,7 +88,7 @@ void display(List L){
     printf("\n");
 }
 
-/* ---------- MAIN TEST ---------- */
+
 int main(){
     List L;
     L = initialize(L);
@@ -98,7 +98,7 @@ int main(){
     L = insertPos(L, 20, 1);
     L = insertPos(L, 40, 3);
     L = insertPos(L, 50, 4);
-    L = insertPos(L, 60, 5);   // triggers resize
+    L = insertPos(L, 60, 5);   
 
     display(L);
 
