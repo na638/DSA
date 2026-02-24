@@ -2,6 +2,10 @@
 #include <stdlib.h>
 #define LENGTH 5  
 
+/*---------------------------------------------*/
+//List is a dynamic array and accessed by value.
+/*---------------------------------------------*/
+
 typedef struct {
     int *elem;   
     int count; 
