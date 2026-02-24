@@ -4,7 +4,6 @@
 /*---------------------------------------------*/
 //List is a static array and accessed by value.
 /*---------------------------------------------*/
-
 typedef struct{
     int elem[MAX];
     int count;
