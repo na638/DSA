@@ -3,6 +3,9 @@
 
 #define MAX 100
 
+/*---------------------------------------------*/
+//List is a static array and accessed by pointer.
+/*---------------------------------------------*/
 typedef struct {
     int elem[MAX];
     int count;
