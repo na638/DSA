@@ -1,5 +1,5 @@
 /*---------------------------------------------*/
-//List is a static array and accessed by value.
+//List is a dynamic array and accessed by pointer.
 /*---------------------------------------------*/
 #include <stdio.h>
 #include <stdlib.h>
