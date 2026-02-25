@@ -23,68 +23,67 @@ List initialize() {
 }
 
 List insertPos(List L, int data, int position) {
-    Node *newNode, *trav;
+    Node *newNode;
     int i;
 
     if (position < 0 || position > L.count) {
         printf("Invalid Position\n");
         return L;
-    } 
-
-    newNode = (Node*)malloc(sizeof(Node));
-    newNode->data = data;
-
-    if (position == 0) {
-        newNode->next = L.head;
-        L.head = newNode;
     } else {
-        trav = L.head;
-        for (i = 0; i < position - 1; i++) {
-            trav = trav->next;
-        }
-        newNode->next = trav->next;
-        trav->next = newNode;
-    }
+        newNode = (Node*)malloc(sizeof(Node));
+        newNode->data = data;
 
-    L.count++;
-    return L;
+        if (position == 0) {
+            newNode->next = L.head;
+            L.head = newNode;
+        } else {
+            Node *curr = L.head;
+            for (i = 0; i < position - 1; i++) {
+            curr = curr->next;
+            }
+            newNode->next = curr->next;
+            curr->next = newNode;
+        }
+        L.count++;
+        return L;
+    }
 }
 
 List deletePos(List L, int position) {
-    Node *temp, *trav;
+    Node *temp;
     int i;
 
     if (position < 0 || position >= L.count) {
+        printf("Invalid Pos\n");
+        return L;
+    } else {
+        if (position == 0) {
+            temp = L.head;
+            L.head = temp->next;
+            free(temp);
+        } else {
+            Node *curr = L.head;
+            for (i = 0; i < position - 1; i++) {
+                curr = curr->next;
+            }
+            temp = curr->next;
+            curr->next = temp->next;
+            free(temp);
+        }
+        L.count--;
         return L;
     }
-
-    if (position == 0) {
-        temp = L.head;
-        L.head = temp->next;
-        free(temp);
-    } else {
-        trav = L.head;
-        for (i = 0; i < position - 1; i++) {
-            trav = trav->next;
-        }
-        temp = trav->next;
-        trav->next = temp->next;
-        free(temp);
-    }
-
-    L.count--;
-    return L;
 }
 
 int locate(List L, int data) {
-    Node *trav = L.head;
+    Node *curr = L.head;
     int pos = 0;
 
-    while (trav != NULL) {
-        if (trav->data == data) {
+    while (curr != NULL) {
+        if (curr->data == data) {
             return pos;
         }
-        trav = trav->next;
+        curr = curr->next;
         pos++;
     }
 
@@ -92,7 +91,7 @@ int locate(List L, int data) {
 }
 
 int retrieve(List L, int position) {
-    Node *trav = L.head;
+    Node *curr = L.head;
     int i;
 
     if (position < 0 || position >= L.count) {
@@ -100,28 +99,28 @@ int retrieve(List L, int position) {
     }
 
     for (i = 0; i < position; i++) {
-        trav = trav->next;
+        curr = curr->next;
     }
 
-    return trav->data;
+    return curr->data;
 }
 
 List insertSorted(List L, int data) {
-    Node *newNode, *trav;
+    Node *newNode;
 
-    newNode = (Node *)malloc(sizeof(Node));
+    newNode = (Node*)malloc(sizeof(Node));
     newNode->data = data;
 
     if (L.head == NULL || data < L.head->data) {
         newNode->next = L.head;
         L.head = newNode;
     } else {
-        trav = L.head;
-        while (trav->next != NULL && trav->next->data < data) {
-            trav = trav->next;
+        Node *curr = L.head;
+        while (curr->next != NULL && curr->next->data < data) {
+            curr = curr->next;
         }
-        newNode->next = trav->next;
-        trav->next = newNode;
+        newNode->next = curr->next;
+        curr->next = newNode;
     }
 
     L.count++;
@@ -129,11 +128,11 @@ List insertSorted(List L, int data) {
 }
 
 void display(List L) {
-    Node *trav = L.head;
+    Node *curr = L.head;
 
-    while (trav != NULL) {
-        printf("%d ", trav->data);
-        trav = trav->next;
+    while (curr != NULL) {
+        printf("%d ", curr->data);
+        curr = curr->next;
     }
     printf("\n");
 }
@@ -151,7 +150,6 @@ List makeNULL(List L) {
     return L;
 }
 
-/* MAIN — NOT main(void) */
 int main() {
     List L;
 
