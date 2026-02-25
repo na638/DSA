@@ -42,11 +42,12 @@ void deletePos(List *L, int position){
     if(position < 0 || position >= L->count){
         printf("Invalid Position\n");
         return;
+    } else {
+        for(int i = position; i < L->count - 1; i++){
+            L->elem[i] = L->elem[i + 1];
+        }
+        L->count--;
     }
-    for(int i = position; i < L->count - 1; i++){
-        L->elem[i] = L->elem[i + 1];
-    }
-    L->count--;
 }
 
 int locate(List *L, int data){
@@ -68,13 +69,14 @@ int retrieve(List *L, int position){
 void insertSorted(List *L, int data){
     if(L->count == L->max){
         resize(L);
-    }
-    int i;
-    for(i = L->count - 1; i >= 0 && L->elem[i] > data; i--){
-        L->elem[i + 1] = L->elem[i];
-    }
-    L->elem[i + 1] = data;
-    L->count++;
+    }else {
+        int i;
+        for(i = L->count - 1; i >= 0 && L->elem[i] > data; i--){
+            L->elem[i + 1] = L->elem[i];
+        }
+        L->elem[i + 1] = data;
+        L->count++;
+    }    
 }
 
 void display(List *L){
