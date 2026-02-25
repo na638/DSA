@@ -22,16 +22,13 @@ void initialize(EPtr L){
 void insertPos(EPtr L, int value, int pos){
     if(L->count >= L->max){
         printf("List Full\n");
-        return;
-    }
-
-    if(pos < 0 || pos > L->count){
+    } else if(pos < 0 || pos > L->count){
         printf("Invalid Position\n");
-        return;
-    }
-
-    for(int i = L->count; i > pos; i--){
-        L->elem[i] = L->elem[i - 1];
+        
+    } else{
+        for(int i = L->count; i > pos; i--){
+            L->elem[i] = L->elem[i - 1];
+        }   
     }
 
     L->elem[pos] = value;
@@ -41,29 +38,26 @@ void insertPos(EPtr L, int value, int pos){
 void deletePos(EPtr L, int pos){
     if(pos < 0 || pos >= L->count){
         printf("Invalid Position\n");
-        return;
+    } else {
+        for(int i = pos; i < L->count - 1; i++){
+            L->elem[i] = L->elem[i + 1];
+        }
     }
-
-    for(int i = pos; i < L->count - 1; i++){
-        L->elem[i] = L->elem[i + 1];
-    }
-
     L->count--;
 }
 
 void insertSorted(EPtr L, int value){
     if(L->count >= L->max){
         printf("List Full\n");
-        return;
-    }
-
-    int i;
-    for(i = L->count - 1; i >= 0 && L->elem[i] > value; i--){
+    } else {
+        int i;
+        for(i = L->count - 1; i >= 0 && L->elem[i] > value; i--){
         L->elem[i + 1] = L->elem[i];
     }
 
     L->elem[i + 1] = value;
     L->count++;
+    }
 }
 
 int Locate(EPtr L, int value){
