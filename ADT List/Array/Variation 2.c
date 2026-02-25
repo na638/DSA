@@ -29,10 +29,9 @@ void insertPos(EPtr L, int value, int pos){
         for(int i = L->count; i > pos; i--){
             L->elem[i] = L->elem[i - 1];
         }   
+        L->elem[pos] = value;
+        L->count++;
     }
-
-    L->elem[pos] = value;
-    L->count++;
 }
 
 void deletePos(EPtr L, int pos){
@@ -42,8 +41,8 @@ void deletePos(EPtr L, int pos){
         for(int i = pos; i < L->count - 1; i++){
             L->elem[i] = L->elem[i + 1];
         }
+        L->count--;
     }
-    L->count--;
 }
 
 void insertSorted(EPtr L, int value){
@@ -53,10 +52,10 @@ void insertSorted(EPtr L, int value){
         int i;
         for(i = L->count - 1; i >= 0 && L->elem[i] > value; i--){
         L->elem[i + 1] = L->elem[i];
-    }
+        }
 
-    L->elem[i + 1] = value;
-    L->count++;
+        L->elem[i + 1] = value;
+        L->count++;
     }
 }
 

@@ -26,16 +26,16 @@ void resize(List *L){
 void insertPos(List *L, int data, int position){
     if(position < 0 || position > L->count){
         printf("Invalid Position\n");
-        return;
-    }
-    if(L->count == L->max){
+    } else if(L->count == L->max){
         resize(L);
+    } else{
+        for(int i = L->count; i > position; i--){
+            L->elem[i] = L->elem[i - 1];
+        }
+
+        L->elem[position] = data;
+        L->count++;
     }
-    for(int i = L->count; i > position; i--){
-        L->elem[i] = L->elem[i - 1];
-    }
-    L->elem[position] = data;
-    L->count++;
 }
 
 void deletePos(List *L, int position){
