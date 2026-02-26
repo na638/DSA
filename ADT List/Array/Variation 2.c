@@ -24,7 +24,6 @@ void insertPos(EPtr L, int value, int pos){
         printf("List Full\n");
     } else if(pos < 0 || pos > L->count){
         printf("Invalid Position\n");
-        
     } else{
         for(int i = L->count; i > pos; i--){
             L->elem[i] = L->elem[i - 1];
@@ -45,16 +44,16 @@ void deletePos(EPtr L, int pos){
     }
 }
 
-void insertSorted(EPtr L, int value){
-    if(L->count >= L->max){
+void insertSorted(EPtr L, int value) {
+    if (L->count >= L->max) {
         printf("List Full\n");
     } else {
         int i;
-        for(i = L->count - 1; i >= 0 && L->elem[i] > value; i--){
-        L->elem[i + 1] = L->elem[i];
+        for (i = L->count; i > 0 && L->elem[i - 1] > value; i--) {
+            L->elem[i] = L->elem[i - 1];
         }
 
-        L->elem[i + 1] = value;
+        L->elem[i] = value;
         L->count++;
     }
 }
