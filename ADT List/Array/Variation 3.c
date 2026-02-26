@@ -25,23 +25,21 @@ List resize(List L){
     return L;
 }
 
-List insertPos(List L, int data, int position){
+List insertPos(List L, int data, int pos){
 
-    if(position < 0 || position > L.count){
+    if(pos < 0 || pos > L.count){
         printf("Invalid Position\n");
-        return L;
-    }
-
-    if(L.count == L.max){
+    } else if (L.count == L.max) {
         L = resize(L);
-    }
+    } else{
+        for(int i = L.count; i > pos; i--){
+            L.elem[i] = L.elem[i - 1];
+        }
 
-    for(int i = L.count; i > position; i--){
-        L.elem[i] = L.elem[i - 1];
+        L.elem[pos] = data;
+        L.count++;
     }
-
-    L.elem[position] = data;
-    L.count++;
+    
     return L;
 }
 
@@ -49,14 +47,13 @@ List deletePos(List L, int position){
 
     if(position < 0 || position >= L.count){
         printf("Invalid Position\n");
-        return L;
-    }
+    } else {
+        for(int i = position; i < L.count - 1; i++){
+            L.elem[i] = L.elem[i + 1];
+        }
 
-    for(int i = position; i < L.count - 1; i++){
-        L.elem[i] = L.elem[i + 1];
-    }
-
-    L.count--;
+        L.count--;
+    } 
     return L;
 }
 
@@ -69,19 +66,19 @@ int locate(List L, int data){
     return -1;
 }
 
-List insertSorted(List L, int data){
+List insertSorted(List L, int data) {
 
-    if(L.count == L.max){
+    if (L.count == L.max) {
         L = resize(L);
-    }
+    } else{
+        int i;
+        for (i = L.count; i > 0 && L.elem[i - 1] > data; i--) {
+            L.elem[i] = L.elem[i - 1];
+        }
 
-    int i;
-    for(i = L.count - 1; i >= 0 && L.elem[i] > data; i--){
-        L.elem[i + 1] = L.elem[i];
+        L.elem[i] = data;
+        L.count++;
     }
-
-    L.elem[i + 1] = data;
-    L.count++;
     return L;
 }
 
