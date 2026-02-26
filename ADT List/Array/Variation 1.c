@@ -16,54 +16,49 @@ List initialize(){
 }
 
 List insertPos(List L, int value, int pos){
-   if(L.count >= MAX){
-        printf("List Full\n");
-        return L;
-   }
+    if(L.count >= MAX || pos < 0 || pos > L.count){
+        printf("Invalid Position.\n");
+    } else {
+        for(int i = L.count; i > pos; i--){
+            L.elem[i] = L.elem[i - 1];
+        }
 
-   if(pos < 0 || pos > L.count){
-        printf("Invalid Position\n");
-        return L;
-   }
-
-   for(int i = L.count; i >= pos; i--){
-        L.elem[i] = L.elem[i - 1];
-   }
-
-   L.elem[pos] = value;
-   L.count++;
-   return L;
+        L.elem[pos] = value;
+        L.count++;
+    }
+    
+    return L;
 }
 
 List deletePos(List L, int pos){
     if(pos < 0 || pos >= L.count){
         printf("Invalid Position\n");
-        return L;
+    }else{
+    
+        for(int i = pos; i < L.count; i++){
+            L.elem[i] = L.elem[i + 1];
+        } 
+
+        L.count--;
     }
 
-    for(int i = pos; i < L.count - 1; i++){
-        L.elem[i] = L.elem[i + 1];
-    }
-
-    L.count--;
     return L;
 }
 
-List insertSorted(List L, int value){
-     if(L.count >= MAX){
+List insertSorted(List L, int value){ 
+    
+    if(L.count >= MAX){
         printf("List Full\n");
-        return L;
-    }
+    } else {
+        int i;
+        for(i = L.count; i > 0 && L.elem[i - 1] > value; i--){
+            L.elem[i] = L.elem[i - 1];
+        }
 
-    int i;
-    for(i = L.count - 1; i >= 0 && L.elem[i] > value; i--){
-        L.elem[i + 1] = L.elem[i];
+        L.elem[i] = value;
+        L.count++;
     }
-
-    L.elem[i + 1] = value;
-    L.count++;
     return L;
-
 }
 
 int Locate(List L, int value){
@@ -95,7 +90,7 @@ int main() {
     L.elem[2] = 2;
     L.elem[3] = 5;
     L.count = 4;
-
+    
     L = insertPos(L, 4, 2);
     display(L);  
 
