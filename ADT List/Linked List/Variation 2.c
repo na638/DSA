@@ -106,7 +106,7 @@ void deleteStart(List *list) {
     }
 }
 
-
+/* deleteLast */
 void deleteLast(List *list) {
     Node *current;
     int i;
