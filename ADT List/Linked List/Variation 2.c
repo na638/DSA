@@ -63,7 +63,7 @@ void insertLast(List *list, int data) {
         while (curr->next != NULL) {
             curr = curr->next;
         }
-        cur->next = newNode;
+        curr->next = newNode;
     }
 
     list->count++;
@@ -108,7 +108,7 @@ void deleteStart(List *list) {
 
 /* deleteLast */
 void deleteLast(List *list) {
-    Node *current;
+    Node *curr;
     int i;
 
     if (list->head == NULL) {
@@ -122,13 +122,13 @@ void deleteLast(List *list) {
         return;
     }
 
-    current = list->head;
+    curr = list->head;
     for (i = 0; i < list->count - 2; i++) {
-        current = current->next;
+        curr = curr->next;
     }
 
-    free(current->next);
-    current->next = NULL;
+    free(curr->next);
+    curr->next = NULL;
 
     list->count--;
 }
