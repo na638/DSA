@@ -96,13 +96,13 @@ int main(){
     initialize(&L);
 
     insertPos(&L, 1, 0);
-    insertPos(&L, 3, 1);
-    insertPos(&L, 2, 2);
+    insertPos(&L, 2, 1);
+    insertPos(&L, 4, 2);
     insertPos(&L, 5, 3);
 
     display(&L);
 
-    insertPos(&L, 4, 2);
+    insertPos(&L, 3, 2);
     display(&L);
 
     deletePos(&L, 1);
@@ -111,7 +111,7 @@ int main(){
     printf("Locate 5: %d\n", locate(&L, 5));
     printf("Retrieve index 2: %d\n", retrieve(&L, 2));
 
-    insertSorted(&L, 8);
+    insertSorted(&L, 3);
     display(&L);
 
     makeNULL(&L);
