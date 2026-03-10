@@ -106,7 +106,6 @@ void deleteStart(List *list) {
     }
 }
 
-/* deleteLast */
 void deleteLast(List *list) {
     Node *curr;
     int i;
@@ -163,7 +162,7 @@ int retrieve(List *list, int index) {
         return -1;
     }
 
-    Node *cur = list->head;
+    Node *curr = list->head;
     for (i = 0; i < index; i++) {
         curr = curr->next;
     }
@@ -191,11 +190,50 @@ int locate(List *list, int data) {
 }
 
 void display(List *list) {
-    Node *currt = list->head;
+    Node *curr = list->head;
 
     while (curr != NULL) {
         printf("%d ", curr->data);
-        current = curr->next;
+        curr = curr->next;
     }
     printf("\n");
+}
+
+int main() {
+    List *L = initialize();
+
+    if (L == NULL) {
+        printf("allocation failed\n");
+        return 1;
+    }
+    
+    insertFirst(L, 10);
+    insertLast(L, 20);
+    insertLast(L, 30);
+    insertLast(L, 40);
+
+    display(L);
+    
+    insertPos(L, 25, 2);
+    display(L);
+
+    deleteStart(L);
+    display(L);
+    
+    deleteLast(L);
+    display(L);
+
+    deletePos(L, 1);
+    display(L);
+
+    int value = retrieve(L, 1);
+    printf("Value at index 1: %d\n", value);
+
+    int pos = locate(L, 30);
+    printf("Position of 30: %d\n", pos);
+
+    empty(L);
+    free(L);
+
+    return 0;
 }
