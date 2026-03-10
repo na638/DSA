@@ -29,9 +29,8 @@ List insertPos(List L, int data, int pos){
 
     if(pos < 0 || pos > L.count){
         printf("Invalid Position\n");
-    } else if (L.count == L.max) {
+    } else  {
         L = resize(L);
-    } else{
         for(int i = L.count; i > pos; i--){
             L.elem[i] = L.elem[i - 1];
         }
