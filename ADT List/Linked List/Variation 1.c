@@ -157,10 +157,10 @@ int main() {
 
     L = insertPos(L, 10, 0);
     L = insertPos(L, 20, 1);
-    L = insertPos(L, 15, 1);
+    L = insertPos(L, 30, 2);
     display(L);
 
-    L = insertSorted(L, 12);
+    L = insertSorted(L, 25);
     display(L);
 
     L = deletePos(L, 2);
