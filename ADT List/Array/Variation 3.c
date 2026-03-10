@@ -95,11 +95,11 @@ int main(){
     L = initialize(L);
 
     L = insertPos(L, 10, 0);
-    L = insertPos(L, 30, 1);
-    L = insertPos(L, 20, 2);
+    L = insertPos(L, 20, 1);
+    L = insertPos(L, 30, 2);
     L = insertPos(L, 40, 3);
     L = insertPos(L, 50, 4);
-    L = insertPos(L, 60, 5);   
+    L = insertPos(L, 60, 5); 
 
     display(L);
 
