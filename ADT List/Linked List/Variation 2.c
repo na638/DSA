@@ -2,7 +2,7 @@
 #include <stdlib.h>
 
 /*---------------------------------------------*/
-//List is a Linked List and accessed by value.
+// List is a Linked List and accessed by pointer.
 /*---------------------------------------------*/
 
 typedef struct node {
@@ -111,25 +111,22 @@ void deleteLast(List *list) {
     int i;
 
     if (list->head == NULL) {
-        return;
-    }
-
-    if (list->count == 1) {
+        printf("Empty");
+    } else if (list->count == 1) {
         free(list->head);
         list->head = NULL;
         list->count--;
-        return;
+    } else {
+        curr = list->head;
+        for (i = 0; i < list->count - 2; i++) {
+            curr = curr->next;
+        }
+
+        free(curr->next);
+        curr->next = NULL;
+
+        list->count--;
     }
-
-    curr = list->head;
-    for (i = 0; i < list->count - 2; i++) {
-        curr = curr->next;
-    }
-
-    free(curr->next);
-    curr->next = NULL;
-
-    list->count--;
 }
 
 void deletePos(List *list, int index) {
