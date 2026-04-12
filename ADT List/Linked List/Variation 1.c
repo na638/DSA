@@ -4,6 +4,7 @@
 /*---------------------------------------------*/
 //List is a Linked List and accessed by value.
 /*---------------------------------------------*/
+
 typedef struct node {
     int data;
     struct node *next;
@@ -14,121 +15,179 @@ typedef struct {
     int count;
 } List;
 
+List* initialize() {
+    List *L = (List*)malloc(sizeof(List));
 
-List initialize() {
-    List L;
-    L.head = NULL;
-    L.count = 0;
+    if (L == NULL) {
+        return NULL;
+    }
+
+    L->head = NULL;
+    L->count = 0;
     return L;
 }
 
-List insertPos(List L, int data, int position) {
-    Node *newNode;
+void empty(List *list) {
+    Node *temp;
+
+    while (list->head != NULL) {
+        temp = list->head;
+        list->head = temp->next;
+        free(temp);
+    }
+
+    list->count = 0;
+}
+
+void insertFirst(List *list, int data) {
+    Node *newNode = (Node *)malloc(sizeof(Node));
+
+    newNode->data = data;
+    newNode->next = list->head;
+    list->head = newNode;
+
+    list->count++;
+}
+
+void insertLast(List *list, int data) {
+    Node *newNode = (Node *)malloc(sizeof(Node));
+    
+
+    newNode->data = data;
+    newNode->next = NULL;
+
+    if (list->head == NULL) {
+        list->head = newNode;
+    } else {
+        Node *curr = list->head;
+        while (curr->next != NULL) {
+            curr = curr->next;
+        }
+        curr->next = newNode;
+    }
+
+    list->count++;
+}
+
+void insertPos(List *list, int data, int index) {
+    Node *newNode, *current;
     int i;
 
-    if (position < 0 || position > L.count) {
+    if (index < 0 || index > list->count) {
         printf("Invalid Position\n");
-        return L;
+    }else if (index == 0) {
+        insertFirst(list, data);
+    }else if (index == list->count) {
+        insertLast(list, data);
     } else {
-        newNode = (Node*)malloc(sizeof(Node));
+        newNode = (Node *)malloc(sizeof(Node));
         newNode->data = data;
 
-        if (position == 0) {
-            newNode->next = L.head;
-            L.head = newNode;
-        } else {
-            Node *curr = L.head;
-            for (i = 0; i < position - 1; i++) {
+        Node *curr = list->head;
+        for (i = 0; i < index - 1; i++) {
             curr = curr->next;
-            }
-            newNode->next = curr->next;
-            curr->next = newNode;
         }
-        L.count++;
-        return L;
+
+        newNode->next = curr->next;
+        curr->next = newNode;
+
+        list->count++;
     }
 }
 
-List deletePos(List L, int position) {
+
+void deleteStart(List *list) {
+    Node *curr = list->head;
+
+    if (list->head != NULL) {
+        list->head = curr->next;
+        free(curr);
+        list->count--;
+    }
+}
+
+void deleteLast(List *list) {
+    Node *curr;
+    int i;
+
+    if (list->head == NULL) {
+        printf("Empty");
+    } else if (list->count == 1){
+        free(list->head);
+        list->head = NULL;
+        list->count--;
+    } else {
+        curr = list->head;
+        for (i = 0; i < list->count - 2; i++) {
+            curr = curr->next;
+        }
+
+        free(curr->next);
+        curr->next = NULL;
+
+        list->count--;
+    }
+}
+
+void deletePos(List *list, int index) {
     Node *temp;
     int i;
 
-    if (position < 0 || position >= L.count) {
-        printf("Invalid Pos\n");
-        return L;
-    } else {
-        if (position == 0) {
-            temp = L.head;
-            L.head = temp->next;
-            free(temp);
+    if (index >= 0 && index < list->count) {
+        if (index == 0) {
+            deleteStart(list);
         } else {
-            Node *curr = L.head;
-            for (i = 0; i < position - 1; i++) {
+            Node *curr = list->head;
+            for (i = 0; i < index - 1; i++) {
                 curr = curr->next;
             }
+
             temp = curr->next;
             curr->next = temp->next;
             free(temp);
+
+            list->count--;
         }
-        L.count--;
-        return L;
     }
 }
 
-int locate(List L, int data) {
-    Node *curr = L.head;
-    int pos = 0;
-
-    while (curr != NULL) {
-        if (curr->data == data) {
-            return pos;
-        }
-        curr = curr->next;
-        pos++;
-    }
-
-    return -1;
-}
-
-int retrieve(List L, int position) {
-    Node *curr = L.head;
+int retrieve(List *list, int index) {
+    
     int i;
 
-    if (position < 0 || position >= L.count) {
+    if (index < 0 || index >= list->count) {
         return -1;
     }
 
-    for (i = 0; i < position; i++) {
+    Node *curr = list->head;
+    for (i = 0; i < index; i++) {
         curr = curr->next;
     }
 
     return curr->data;
 }
 
-List insertSorted(List L, int data) {
-    Node *newNode;
+int locate(List *list, int data) {
+    int index = 0;
 
-    newNode = (Node*)malloc(sizeof(Node));
-    newNode->data = data;
-
-    if (L.head == NULL || data < L.head->data) {
-        newNode->next = L.head;
-        L.head = newNode;
-    } else {
-        Node *curr = L.head;
-        while (curr->next != NULL && curr->next->data < data) {
-            curr = curr->next;
-        }
-        newNode->next = curr->next;
-        curr->next = newNode;
+    if (list->head == NULL) {
+        return -1;
     }
 
-    L.count++;
-    return L;
+    Node *curr = list->head;
+    while (curr != NULL) {
+        if (curr->data == data) {
+            return index;
+        }
+        curr = curr->next;
+        index++;
+    }
+
+    return -1;
 }
 
-void display(List L) {
-    Node *curr = L.head;
+void display(List *list) {
+    Node *curr = list->head;
 
     while (curr != NULL) {
         printf("%d ", curr->data);
@@ -137,39 +196,41 @@ void display(List L) {
     printf("\n");
 }
 
-List makeNULL(List L) {
-    Node *temp;
-
-    while (L.head != NULL) {
-        temp = L.head;
-        L.head = temp->next;
-        free(temp);
-    }
-
-    L.count = 0;
-    return L;
-}
-
 int main() {
-    List L;
+    List *L = initialize();
 
-    L = initialize();
+    if (L == NULL) {
+        printf("allocation failed\n");
+        return 1;
+    }
+    
+    insertFirst(L, 10);
+    insertLast(L, 20);
+    insertLast(L, 30);
+    insertLast(L, 40);
 
-    L = insertPos(L, 10, 0);
-    L = insertPos(L, 20, 1);
-    L = insertPos(L, 15, 1);
+    display(L);
+    
+    insertPos(L, 25, 2);
     display(L);
 
-    L = insertSorted(L, 12);
+    deleteStart(L);
+    display(L);
+    
+    deleteLast(L);
     display(L);
 
-    L = deletePos(L, 2);
+    deletePos(L, 1);
     display(L);
 
-    printf("Locate 20: %d\n", locate(L, 20));
-    printf("Retrieve pos 1: %d\n", retrieve(L, 1));
+    int value = retrieve(L, 1);
+    printf("Value at index 1: %d\n", value);
 
-    L = makeNULL(L);
+    int pos = locate(L, 30);
+    printf("Position of 30: %d\n", pos);
+
+    empty(L);
+    free(L);
 
     return 0;
 }

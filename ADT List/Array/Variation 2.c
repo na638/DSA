@@ -93,7 +93,7 @@ int main(){
 
     insertPos(L, 1, 0);
     insertPos(L, 3, 1);
-    insertPos(L, 2, 1);
+    insertPos(L, 2, 2);
     insertPos(L, 5, 3);
 
     display(L);  
