@@ -89,48 +89,54 @@ void insertLast(RaceList *RL, VHeap *VH, Player p) {
         VH->H[newNode].details = p;
         VH->H[newNode].next = -1;
 
-        int *trav = &RL->L;
-        while (*trav != -1) {
-            trav = &VH->H[*trav].next;
+        int *curr = &RL->L;
+        while (*curr != -1) {
+            curr = &VH->H[*curr].next;
         }
 
-        *trav = newNode;
+        *curr = newNode;
         RL->count++;
     }
 }
 
 void insertAtPos(RaceList *RL, VHeap *VH, Player p, int pos) {
-    if (pos < 0 || pos > RL->count) return;
+    if (pos < 0 || pos > RL->count) {
+        printf("Invalid position.\n");
+    } else {
+        int newNode = allocSpace(VH);
+        if (newNode == -1){
+            printf("No Space.\n");
+        } else {
+            int *curr = &RL->L;
+            for (int i = 0; i < pos; i++) {
+                curr = &VH->H[*curr].next;
+            }
 
-    int newNode = allocSpace(VH);
-    if (newNode == -1) return;
+            VH->H[newNode].details = p;
+            VH->H[newNode].next = *curr;
+            *curr = newNode;
 
-    int *trav = &RL->L;
-    for (int i = 0; i < pos; i++) {
-        trav = &VH->H[*trav].next;
-    }
-
-    VH->H[newNode].details = p;
-    VH->H[newNode].next = *trav;
-    *trav = newNode;
-
-    RL->count++;
+            RL->count++;
+        }
+    }    
 }
 
-void insertSorted(RaceList *RL, VHeap *VH, Player p) {
+void insertbyKey(RaceList *RL, VHeap *VH, Player p) {
     int newNode = allocSpace(VH);
-    if (newNode == -1) return;
+    if (newNode == -1){
+        printf("No Space.\n");
+    } else {
+        int *curr = &RL->L;
+        while (*curr != -1 && VH->H[*curr].details.coins < p.coins) {
+            curr = &VH->H[*curr].next;
+        }
 
-    int *trav = &RL->L;
-    while (*trav != -1 && VH->H[*trav].details.coins < p.coins) {
-        trav = &VH->H[*trav].next;
+        VH->H[newNode].details = p;
+        VH->H[newNode].next = *curr;
+        *curr = newNode;
+
+        RL->count++;
     }
-
-    VH->H[newNode].details = p;
-    VH->H[newNode].next = *trav;
-    *trav = newNode;
-
-    RL->count++;
 }
 
 void deleteFirst(RaceList *RL, VHeap *VH) {
@@ -145,43 +151,45 @@ void deleteFirst(RaceList *RL, VHeap *VH) {
 void deleteLast(RaceList *RL, VHeap *VH) {
     if (RL->L == -1) return;
 
-    int *trav = &RL->L;
-    while (VH->H[*trav].next != -1) {
-        trav = &VH->H[*trav].next;
+    int *curr = &RL->L;
+    while (VH->H[*curr].next != -1) {
+        curr = &VH->H[*curr].next;
     }
 
-    int temp = *trav;
-    *trav = -1;
+    int temp = *curr;
+    *curr = -1;
 
     deallocSpace(VH, temp);
     RL->count--;
 }
 
 void deleteAtPos(RaceList *RL, VHeap *VH, int pos) {
-    if (pos < 0 || pos >= RL->count) return;
+    if (pos < 0 || pos >= RL->count){
+        printf("Invalid position.\n");
+    } else{
+        int *curr = &RL->L;
+        for (int i = 0; i < pos; i++) {
+            curr = &VH->H[*curr].next;
+        }
 
-    int *trav = &RL->L;
-    for (int i = 0; i < pos; i++) {
-        trav = &VH->H[*trav].next;
+        int temp = *curr;
+        *curr = VH->H[temp].next;
+
+        deallocSpace(VH, temp);
+        RL->count--;
     }
-
-    int temp = *trav;
-    *trav = VH->H[temp].next;
-
-    deallocSpace(VH, temp);
-    RL->count--;
 }
 
-void deleteByID(RaceList *RL, VHeap *VH, char *id) {
-    int *trav = &RL->L;
+void deleteBykey(RaceList *RL, VHeap *VH, char *id) {
+    int *curr = &RL->L;
 
-    while (*trav != -1 && strcmp(VH->H[*trav].details.IGN.id, id) != 0) {
-        trav = &VH->H[*trav].next;
+    while (*curr != -1 && strcmp(VH->H[*curr].details.IGN.id, id) != 0) {
+        curr = &VH->H[*curr].next;
     }
 
-    if (*trav != -1) {
-        int temp = *trav;
-        *trav = VH->H[temp].next;
+    if (*curr != -1) {
+        int temp = *curr;
+        *curr = VH->H[temp].next;
 
         deallocSpace(VH, temp);
         RL->count--;
@@ -225,14 +233,14 @@ int main() {
     insertFirst(&RL, &VH, p1);
     insertLast(&RL, &VH, p2);
     insertAtPos(&RL, &VH, p3, 1);
-    insertSorted(&RL, &VH, p4);
+    insertbyKey(&RL, &VH, p4);
 
     display(RL, VH);
 
     deleteFirst(&RL, &VH);
     deleteLast(&RL, &VH);
     deleteAtPos(&RL, &VH, 0);
-    deleteByID(&RL, &VH, "ID4");
+    deleteBykey(&RL, &VH, "ID4");
 
     display(RL, VH);
 
